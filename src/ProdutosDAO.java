@@ -34,6 +34,7 @@ public class ProdutosDAO {
             prep = conn.prepareStatement("INSERT INTO produtos(nome,valor) VALUES(?,?)");
             prep.setString(1,produto.getNome());
             prep.setInt(2,produto.getValor());
+            prep.setString(3, produto.getStatus());
             prep.executeUpdate();
             JOptionPane.showMessageDialog(null,"Sucesso!");
         } catch (SQLException ex) {
@@ -48,7 +49,28 @@ public class ProdutosDAO {
     
     
     public ArrayList<ProdutosDTO> listarProdutos(){
+            ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    
+    conn = new conectaDAO().connectDB();
+    
+    try {
+        prep = conn.prepareStatement("SELECT * FROM produtos");
+        resultset = prep.executeQuery();
         
+        while(resultset.next()){
+            ProdutosDTO produto = new ProdutosDTO();
+            
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setValor(resultset.getInt("valor"));
+            produto.setStatus(resultset.getString("status"));
+            
+            listagem.add(produto);
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage());
+    }
         return listagem;
     }
     
