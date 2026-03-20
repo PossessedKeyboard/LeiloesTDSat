@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ProdutosDAO {
@@ -92,7 +93,40 @@ public class ProdutosDAO {
         JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
     }
 }   
+
+ public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+    ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
+    conn = new conectaDAO().connectDB();
+    
+    try {
+        prep = conn.prepareStatement(
+            "SELECT * FROM produtos WHERE status = ?"
+        );
+        prep.setString(1, "Vendido");
         
+        resultset = prep.executeQuery();
+        
+        while(resultset.next()){
+            ProdutosDTO produto = new ProdutosDTO();
+            
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setValor(resultset.getInt("valor"));
+            produto.setStatus(resultset.getString("status"));
+            
+            listagem.add(produto);
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao listar vendidos: " + e.getMessage());
+    }
+    
+    return listagem;
+}
+  
+ 
+ 
+ 
 }
 
