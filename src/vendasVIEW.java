@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author DELL
@@ -16,6 +18,7 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
+        listarVendas();
     }
 
     /**
@@ -74,9 +77,26 @@ public class vendasVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-    dispose();
+    this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
+      private void listarVendas(){
+        ProdutosDAO dao = new ProdutosDAO();
+        ArrayList<ProdutosDTO> lista = dao.listarProdutosVendidos();
+        
+        DefaultTableModel model = (DefaultTableModel) tabelaVendas.getModel();
+        model.setNumRows(0);
+        
+        for(ProdutosDTO p : lista){
+            model.addRow(new Object[]{
+                p.getId(),
+                p.getNome(),
+                p.getValor(),
+                p.getStatus()
+            });
+        }
+      }
+    
     /**
      * @param args the command line arguments
      */

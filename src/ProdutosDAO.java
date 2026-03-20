@@ -32,7 +32,7 @@ public class ProdutosDAO {
         //int status;
         try {
 
-            prep = conn.prepareStatement("INSERT INTO produtos(nome,valor) VALUES(?,?)");
+            prep = conn.prepareStatement("INSERT INTO produtos(nome,valor,status) VALUES(?,?,?)");
             prep.setString(1,produto.getNome());
             prep.setInt(2,produto.getValor());
             prep.setString(3, produto.getStatus());
